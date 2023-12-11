@@ -322,9 +322,7 @@ func (w *Workloader) Run(ctx context.Context, threadID int) error {
 	err := txn.action(ctx, threadID)
 	if errors.Is(err, dtable.ErrConflict) {
 		atomic.AddInt64(&w.ErrConflictCount, 1)
-	}
-
-	if !errors.Is(err, dtable.ErrConflict) {
+	} else {
 		w.rtMeasurement.Measure(txn.name, time.Now().Sub(start), err)
 	}
 
